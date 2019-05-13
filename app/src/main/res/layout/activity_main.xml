@@ -8,10 +8,51 @@
         android:fitsSystemWindows="true"
         tools:context=".MainActivity">
 
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="カテゴリー別表示"
+              android:layout_marginTop="3dp"
+    />
+
+    <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+    >
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="勉強"
+                android:id="@+id/button_serch_study"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="家事"
+                android:layout_toRightOf="@id/button_serch_study"
+                android:id="@+id/button_serch_housework"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="買い物"
+                android:layout_toRightOf="@id/button_serch_housework"
+                android:id="@+id/button_serch_shopping"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="その他"
+                android:layout_toRightOf="@id/button_serch_shopping"
+                android:id="@+id/button_serch_other"/>
+
+    </LinearLayout>
+
     <ListView
             android:id="@+id/listView1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+    ></ListView>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -20,6 +61,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/plus"
-            app:backgroundTint="@color/colorPrimary"/>
+            app:backgroundTint="@color/colorPrimary"
+    />
 
 </android.support.design.widget.CoordinatorLayout>

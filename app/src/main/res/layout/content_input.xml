@@ -27,6 +27,7 @@
         android:hint="内容"
     />
 
+
     <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,12 +48,12 @@
             style="@style/Widget.AppCompat.Button.Borderless"
     />
     <Button
-            android:layout_width="96dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/done_button"
             android:layout_below="@id/times_button"
             android:layout_alignParentRight="true"
-            android:text="決定"
+            android:text="\n決定\n\nカテゴリー選択へ移る\n"
     />
 
 

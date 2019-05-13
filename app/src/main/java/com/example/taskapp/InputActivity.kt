@@ -13,6 +13,7 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.content_input.*
 import java.util.*
 import android.support.v7.widget.Toolbar
+import android.util.Log
 
 class InputActivity : AppCompatActivity() {
 
@@ -46,6 +47,7 @@ class InputActivity : AppCompatActivity() {
 
     private val mOmDoneClickListener = View.OnClickListener {
         addTask()
+        addCategory()//カテゴリー作るメソッド追加
         finish()
     }
 
@@ -147,4 +149,12 @@ class InputActivity : AppCompatActivity() {
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,resultPendingIntent)
 
         }
+
+    private fun addCategory(){
+        //intentにidいれてinputcategoryに行く
+        val intent = Intent(this,InputCategory::class.java)
+        Log.d("aaa",mTask!!.id.toString())
+        intent.putExtra(EXTRA_TASK,mTask!!.id)
+        startActivity(intent)
+    }
     }

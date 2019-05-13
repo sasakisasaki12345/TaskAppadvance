@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context=".InputCategory"
+                tools:showIn="@layout/activity_input_category">
+
+    <Button
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_study"
+            android:text="勉強"
+    />
+
+    <Button
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_housework"
+            android:layout_below="@id/button_study"
+            android:text="家事"
+    />
+
+    <Button
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_shopping"
+            android:layout_below="@id/button_housework"
+            android:text="買い物"
+    />
+
+    <Button
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_other"
+            android:layout_below="@id/button_shopping"
+            android:text="その他"
+    />
+
+
+
+</RelativeLayout>

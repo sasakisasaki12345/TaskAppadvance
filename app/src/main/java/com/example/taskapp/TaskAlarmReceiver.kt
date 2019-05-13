@@ -34,10 +34,12 @@ class TaskAlarmReceiver:BroadcastReceiver() {
         val taskId = intent!!.getIntExtra(EXTRA_TASK,-1)
         val realm = Realm.getDefaultInstance()
         val task = realm.where(Task::class.java).equalTo("id",taskId).findFirst()
+        val category = realm.where(Category::class.java).equalTo("id",taskId).findFirst()
 
         builder.setTicker(task!!.title)
         builder.setContentTitle(task.title)
         builder.setContentText(task.contents)
+        builder.setContentText(category!!.category)
 
         val startAppIntent = Intent(context,MainActivity::class.java)
         startAppIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)

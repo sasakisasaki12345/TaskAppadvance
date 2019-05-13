@@ -8,17 +8,20 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import io.realm.Realm
 import io.realm.RealmChangeListener
+import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 const val EXTRA_TASK = "com.example.taskapp.TASK"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var mRealm:Realm
     private val mRealmLitener = object : RealmChangeListener<Realm>{
@@ -92,6 +95,20 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
 
             true
+        }
+
+          button_serch_study.setOnClickListener {
+            //カテゴリー勉強検索にクリックリスナー
+          val results = mRealm.where(Task::class.java).equalTo("category","study").findAll()//検索クリックしたときの処理
+
+            mTaskAdapter.taskList = mRealm.copyFromRealm(results)//adaputer.tasklistにコピー
+
+            listView1.adapter = mTaskAdapter//list1.adapterに代入
+
+            mTaskAdapter.notifyDataSetChanged()
+
+            Log.d("aaa","aaa")
+
         }
 
         reloadListView()

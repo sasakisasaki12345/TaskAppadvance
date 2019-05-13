@@ -12,14 +12,24 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <activity android:name=".InputCategory"
+                  android:label="カテゴリー"
+                  android:parentActivityName=".InputActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PEARENT_ACTIVITY"
+                android:value="com.example.taskapp.InputActivity"/>
+        </activity>
+
         <activity
                 android:name=".InputActivity"
-             android:label="タスク"
+                android:label="タスク"
                 android:parentActivityName=".MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
-                android:name="android.support.PEARENT_ACTIVITY"
-                android:value="com.example.taskapp.MainActivity"></meta-data>
+                    android:name="android.support.PEARENT_ACTIVITY"
+                    android:value="com.example.taskapp.MainActivity"/>
         </activity>
         <activity
                 android:name=".MainActivity"
@@ -33,7 +43,6 @@
         </activity>
 
         <receiver android:name=".TaskAlarmReceiver"/>
-
     </application>
 
 </manifest>
