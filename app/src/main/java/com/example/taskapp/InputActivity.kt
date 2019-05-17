@@ -191,21 +191,15 @@ class InputActivity : AppCompatActivity() {
 
     private fun makeSpiner(){
 
-        var count = 0
+
         var realm = Realm.getDefaultInstance()
         var categoryName = realm.where(Category::class.java).findAll()
 
-        if(categoryName != null) {
-
-            while (categoryName.max("id") != count) {
-                spinnerItems.add(categoryName[count]!!.name)
-                count = count + 1
-                Log.d("取得カテゴリー名", categoryName[count]!!.name)
-                Log.d("取得カウント", count.toString())
+            realm.copyFromRealm(categoryName).forEach{
+                spinnerItems.add(it.name)
             }
-
-
             realm.close()
+
 
             val adapter = ArrayAdapter(
                 applicationContext,
@@ -216,11 +210,5 @@ class InputActivity : AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             spinner.adapter = adapter
-        }else{
-
-        }
-
-
-
     }
     }

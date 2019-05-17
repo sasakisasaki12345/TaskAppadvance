@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        makeSpiner()
+
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -126,6 +126,11 @@ class MainActivity : AppCompatActivity(){
         reloadListView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        makeSpiner()
+    }
+
     private fun reloadListView(){
         val taskRealmResults = mRealm.where(Task::class.java).findAll().sort("date", Sort.DESCENDING)
 
@@ -144,15 +149,13 @@ class MainActivity : AppCompatActivity(){
 
     private fun makeSpiner(){
 
-        var count = 0
+
         var realm = Realm.getDefaultInstance()
         var categoryName = realm.where(Category::class.java).findAll()
 
-
-        while (categoryName.max("id")== count ){
-            spinnerItems.add(categoryName[count]!!.name)
-            count = count+1
-        }
+            realm.copyFromRealm(categoryName).forEach{
+                spinnerItems.add(it.name)
+            }
         realm.close()
 
         val adapter = ArrayAdapter(
