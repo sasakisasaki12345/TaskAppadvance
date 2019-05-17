@@ -17,6 +17,7 @@ import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import kotlin.collections.ArrayList
 
 class InputActivity : AppCompatActivity() {
 
@@ -26,8 +27,8 @@ class InputActivity : AppCompatActivity() {
     private var mHour=0
     private var mMinute=0
     private var mTask :Task? = null
-    var spinnerItems = arrayListOf<String>("勉強","家事","買物","その他")
-    var selectItem:String? =null
+    var spinnerItems = arrayListOf<String?>("")
+    var selectItem:String =""
 
 
     private val mOnDateClickListener = View.OnClickListener {
@@ -111,6 +112,17 @@ class InputActivity : AppCompatActivity() {
             date_button.text = dateString
             times_button.text = timeString
         }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val spinnerParent = parent as Spinner
+                selectItem = spinnerParent.selectedItem as String
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
      }
 
     override fun onResume() {
@@ -143,18 +155,14 @@ class InputActivity : AppCompatActivity() {
 
         val title = title_edit_text.text.toString()
         val content = content_edit_text.text.toString()
-        val mCategory:Category = Category()
-
-        mCategory.id = mTask!!.id
-        mCategory.name = selectItem
 
         //textviewからじゃくなくスピナーからとる
-        mTask!!.category = mCategory
         mTask!!.title=title
         mTask!!.contents=content
         val calendar = GregorianCalendar(mYear,mMouth,mDay,mHour,mMinute)
         val date = calendar.time
         mTask!!.date =date
+        mTask!!.category=selectItem
 
         realm.copyToRealmOrUpdate(mTask!!)
         realm.commitTransaction()
@@ -183,26 +191,36 @@ class InputActivity : AppCompatActivity() {
 
     private fun makeSpiner(){
 
-        val adapter = ArrayAdapter(
-            applicationContext,
-            android.R.layout.simple_spinner_item,
-            spinnerItems
-        )
+        var count = 0
+        var realm = Realm.getDefaultInstance()
+        var categoryName = realm.where(Category::class.java).findAll()
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        if(categoryName != null) {
 
-        spinner.adapter = adapter
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val spinnerParent = parent as Spinner
-                selectItem = spinnerParent.selectedItem as String
+            while (categoryName.max("id") != count) {
+                spinnerItems.add(categoryName[count]!!.name)
+                count = count + 1
+                Log.d("取得カテゴリー名", categoryName[count]!!.name)
+                Log.d("取得カウント", count.toString())
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-            }
+            realm.close()
+
+            val adapter = ArrayAdapter(
+                applicationContext,
+                android.R.layout.simple_spinner_item,
+                spinnerItems
+            )
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            spinner.adapter = adapter
+        }else{
+
         }
+
+
 
     }
     }

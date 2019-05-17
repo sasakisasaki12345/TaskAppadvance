@@ -5,8 +5,8 @@ import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 
 open class Category :RealmObject(),Serializable {
-    var name :String? = "aaa"
+    var name :String? = ""
     @PrimaryKey
-    var id:Int = 0
+    var id:Int? = -1
 
 }

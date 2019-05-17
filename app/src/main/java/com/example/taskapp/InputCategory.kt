@@ -13,24 +13,46 @@ import java.util.*
 
 class InputCategory : AppCompatActivity() {
 
-    var addCategoryName :String =""
+    var mCategoryClass:Category?= Category()
+    var getCount :Int = -1
 
 
     val mOnAddCategoryListener = View.OnClickListener {
 
-        val intent = Intent(this,InputActivity::class.java)
-        intent.putExtra("name",addCategoryName)
-        startActivity(intent)
+        Realm.init(this)
 
 
+
+        var realm = Realm.getDefaultInstance()
+
+        realm.beginTransaction()
+        val mCategory = realm.where(Category::class.java).findAll()
+
+        getCount =
+            if (mCategory.max("id") != null) {
+                mCategory.max("id")!!.toInt() + 1
+            } else {
+                0
+            }
+
+        mCategoryClass!!.id=getCount
+        mCategoryClass!!.name=add_category_name.text.toString()
+
+        Log.d("ID",getCount.toString())
+        Log.d("名前",mCategoryClass!!.name.toString())
+
+        realm.copyToRealmOrUpdate(mCategoryClass)
+        realm.commitTransaction()
+
+        realm.close()
+
+        finish()
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input_category)
-
-        addCategoryName = add_category_name.text.toString()
 
         add_button.setOnClickListener(mOnAddCategoryListener)
     }

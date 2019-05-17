@@ -12,18 +12,23 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.spinner
+import kotlinx.android.synthetic.main.content_input.*
 import java.util.*
 
 const val EXTRA_TASK = "com.example.taskapp.TASK"
 
 class MainActivity : AppCompatActivity(){
 
+    var spinnerItems = arrayListOf<String?>("")
     private lateinit var mRealm:Realm
     private val mRealmLitener = object : RealmChangeListener<Realm>{
         override fun onChange(element: Realm) {
@@ -98,22 +103,24 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-        //カテゴリー選択したら、それに合わせて、realkから探してアダプターで表示。表示部分はリロード参照。選択時の動作はinputactivity参照
-            //val results = mRealm.where(Task::class.java).equalTo("category.name",spiner.).findAll()//検索クリックしたときの処理
+        makeSpiner()
 
-          //
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val spinnerParent = parent as Spinner
+                val selectItem = spinnerParent.selectedItem as String
+                val results = mRealm.where(Task::class.java).equalTo("category",selectItem).findAll()//検索クリックしたときの処理
+                mTaskAdapter.taskList = mRealm.copyFromRealm(results)//adaputer.tasklistにコピー
 
-            //mTaskAdapter.taskList = mRealm.copyFromRealm(results)//adaputer.tasklistにコピー
+                listView1.adapter = mTaskAdapter//list1.adapterに代入
 
-            //listView1.adapter = mTaskAdapter//list1.adapterに代入
+                mTaskAdapter.notifyDataSetChanged()
+            }
 
-            //mTaskAdapter.notifyDataSetChanged()
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-            //Log.d("aaa","aaa")
-
-       //}
-
-
+            }
+        }
 
 
         reloadListView()
@@ -133,6 +140,33 @@ class MainActivity : AppCompatActivity(){
     override fun onDestroy() {
         super.onDestroy()
         mRealm.close()
+    }
+
+    private fun makeSpiner(){
+
+        var count = 0
+        var realm = Realm.getDefaultInstance()
+        var categoryName = realm.where(Category::class.java).findAll()
+
+
+        while (categoryName.max("id")== count ){
+            spinnerItems.add(categoryName[count]!!.name)
+            count = count+1
+        }
+        realm.close()
+
+        val adapter = ArrayAdapter(
+            applicationContext,
+            android.R.layout.simple_spinner_item,
+            spinnerItems
+        )
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        spinner.adapter = adapter
+
+
+
     }
 
 }

@@ -38,7 +38,7 @@ class TaskAlarmReceiver:BroadcastReceiver() {
         builder.setTicker(task!!.title)
         builder.setContentTitle(task!!.title)
         builder.setContentText(task!!.contents)
-        builder.setContentText(task!!.category!!.name)
+        builder.setContentText(task!!.category)
 
         val startAppIntent = Intent(context,MainActivity::class.java)
         startAppIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
