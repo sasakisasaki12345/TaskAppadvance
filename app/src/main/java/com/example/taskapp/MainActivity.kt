@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
 import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmResults
@@ -97,19 +98,23 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
-          button_serch_study.setOnClickListener {
-            //カテゴリー勉強検索にクリックリスナー
-          val results = mRealm.where(Task::class.java).equalTo("category","study").findAll()//検索クリックしたときの処理
+        //カテゴリー選択したら、それに合わせて、realkから探してアダプターで表示。表示部分はリロード参照。選択時の動作はinputactivity参照
+            //val results = mRealm.where(Task::class.java).equalTo("category.name",spiner.).findAll()//検索クリックしたときの処理
 
-            mTaskAdapter.taskList = mRealm.copyFromRealm(results)//adaputer.tasklistにコピー
+          //
 
-            listView1.adapter = mTaskAdapter//list1.adapterに代入
+            //mTaskAdapter.taskList = mRealm.copyFromRealm(results)//adaputer.tasklistにコピー
 
-            mTaskAdapter.notifyDataSetChanged()
+            //listView1.adapter = mTaskAdapter//list1.adapterに代入
 
-            Log.d("aaa","aaa")
+            //mTaskAdapter.notifyDataSetChanged()
 
-        }
+            //Log.d("aaa","aaa")
+
+       //}
+
+
+
 
         reloadListView()
     }

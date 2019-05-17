@@ -14,6 +14,9 @@ import kotlinx.android.synthetic.main.content_input.*
 import java.util.*
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 
 class InputActivity : AppCompatActivity() {
 
@@ -23,6 +26,9 @@ class InputActivity : AppCompatActivity() {
     private var mHour=0
     private var mMinute=0
     private var mTask :Task? = null
+    var spinnerItems = arrayListOf<String>("勉強","家事","買物","その他")
+    var selectItem:String? =null
+
 
     private val mOnDateClickListener = View.OnClickListener {
         val datePickerDialog = DatePickerDialog(this,DatePickerDialog.OnDateSetListener{ _, year, month, dayOfMonth->
@@ -47,8 +53,12 @@ class InputActivity : AppCompatActivity() {
 
     private val mOmDoneClickListener = View.OnClickListener {
         addTask()
-        addCategory()//カテゴリー作るメソッド追加
         finish()
+    }
+
+    private  val mOnCategoryAddOnClickListener = View.OnClickListener {
+
+        addCategory()
     }
 
 
@@ -65,6 +75,7 @@ class InputActivity : AppCompatActivity() {
         date_button.setOnClickListener(mOnDateClickListener)
         times_button.setOnClickListener(mOnTimeClickListener)
         done_button.setOnClickListener(mOmDoneClickListener)
+        category_add_button.setOnClickListener(mOnCategoryAddOnClickListener)
 
         val intent = intent
         val taskId = intent.getIntExtra(EXTRA_TASK,-1)
@@ -100,11 +111,19 @@ class InputActivity : AppCompatActivity() {
             date_button.text = dateString
             times_button.text = timeString
         }
+     }
 
-        }
+    override fun onResume() {
+        super.onResume()
+        makeSpiner()
+    }
+
+
+
 
     private fun addTask() {
         val realm = Realm.getDefaultInstance()
+        val identifier: Int
 
         realm.beginTransaction()
 
@@ -113,7 +132,7 @@ class InputActivity : AppCompatActivity() {
 
             val taskRealmResults = realm.where(Task::class.java).findAll()
 
-            val identifier: Int =
+            identifier =
                 if (taskRealmResults.max("id") != null) {
                     taskRealmResults.max("id")!!.toInt() + 1
                 } else {
@@ -124,7 +143,13 @@ class InputActivity : AppCompatActivity() {
 
         val title = title_edit_text.text.toString()
         val content = content_edit_text.text.toString()
+        val mCategory:Category = Category()
 
+        mCategory.id = mTask!!.id
+        mCategory.name = selectItem
+
+        //textviewからじゃくなくスピナーからとる
+        mTask!!.category = mCategory
         mTask!!.title=title
         mTask!!.contents=content
         val calendar = GregorianCalendar(mYear,mMouth,mDay,mHour,mMinute)
@@ -153,8 +178,31 @@ class InputActivity : AppCompatActivity() {
     private fun addCategory(){
         //intentにidいれてinputcategoryに行く
         val intent = Intent(this,InputCategory::class.java)
-        Log.d("aaa",mTask!!.id.toString())
-        intent.putExtra(EXTRA_TASK,mTask!!.id)
         startActivity(intent)
+    }
+
+    private fun makeSpiner(){
+
+        val adapter = ArrayAdapter(
+            applicationContext,
+            android.R.layout.simple_spinner_item,
+            spinnerItems
+        )
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val spinnerParent = parent as Spinner
+                selectItem = spinnerParent.selectedItem as String
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+
     }
     }

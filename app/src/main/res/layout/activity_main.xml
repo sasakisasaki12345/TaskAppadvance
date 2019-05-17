@@ -8,44 +8,21 @@
         android:fitsSystemWindows="true"
         tools:context=".MainActivity">
 
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="カテゴリー別表示"
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              android:text="表示"
               android:layout_marginTop="3dp"
+            android:id="@+id/category_serch_button"
     />
 
-    <LinearLayout
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
+    <TextView
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:id="@+id/spinner_text"
+            android:layout_below="@id/content_edit_text"
+            android:layout_toRightOf="@id/spinner"
+    />
 
-    >
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="勉強"
-                android:id="@+id/button_serch_study"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="家事"
-                android:layout_toRightOf="@id/button_serch_study"
-                android:id="@+id/button_serch_housework"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="買い物"
-                android:layout_toRightOf="@id/button_serch_housework"
-                android:id="@+id/button_serch_shopping"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="その他"
-                android:layout_toRightOf="@id/button_serch_shopping"
-                android:id="@+id/button_serch_other"/>
-
-    </LinearLayout>
 
     <ListView
             android:id="@+id/listView1"

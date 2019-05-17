@@ -9,7 +9,7 @@ open class Task :RealmObject(),Serializable{
     var title:String=""
     var contents:String=""
     var date:Date = Date()
-    var category:Category = Category()
+    var category:Category? = Category()
 
     @PrimaryKey
     var id: Int = 0
